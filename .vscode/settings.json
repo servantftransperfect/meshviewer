@@ -1,0 +1,12 @@
+{
+    "clangd.arguments": [
+        "--compile-commands-dir=/s/apps/users/servantf/meshviewer/build.1.0/build/platform-linux/build-release/meshviewer-prefix/src/meshviewer-build",
+        "--path-mappings=/s/apps/users/servantf/meshviewer/build.1.0/build/platform-linux/build-release/meshviewer-prefix/src/meshviewer-build=/s/apps/users/servantf/meshviewer/build.1.0/repo",
+        "--header-insertion=never",
+        "--clang-tidy"
+    ],
+    "clangd.path": "/s/apps/users/servantf/meshviewer/build.1.0/repo/.vscode/clangd-wrapper.sh",
+    "[cpp]": {
+        "editor.defaultFormatter": "llvm-vs-code-extensions.vscode-clangd"
+    }
+}

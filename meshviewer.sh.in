@@ -1,0 +1,10 @@
+#!/bin/sh
+
+INSTALL_PREFIX="@CMAKE_INSTALL_PREFIX@"
+
+export QML_IMPORT_PATH="${INSTALL_PREFIX}/lib"
+export QML2_IMPORT_PATH="${INSTALL_PREFIX}/lib"
+
+exec python3 \
+    "${INSTALL_PREFIX}/share/meshviewer/main.py" \
+    "$@"
