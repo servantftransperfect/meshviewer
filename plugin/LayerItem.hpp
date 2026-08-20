@@ -48,6 +48,8 @@ public:
     /** @brief Factory method: create the IRenderable that renders this layer. */
     virtual std::unique_ptr<IRenderable> createRenderable() const = 0;
 
+    virtual bool rendersInBackground() const { return false; }
+
     virtual bool canPick() const { return false; }
     virtual LayerPickResult pick(const struct Ray &ray) const;
     virtual void applyPickResult(const LayerPickResult &result);

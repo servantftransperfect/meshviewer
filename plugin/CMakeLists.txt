@@ -15,6 +15,7 @@ qt_add_qml_module(meshplugin
         MeshLayer.cpp
         ImageLayer.hpp
         ImageLayer.cpp
+        GridLayer.hpp
         SfmDataLayer.hpp
         SfmDataLayer.cpp
         SfmDataPicker.hpp
@@ -51,6 +52,8 @@ qt_add_qml_module(meshplugin
         AxisGeometry.hpp
         ImageRenderable.hpp
         ImageRenderable.cpp
+        GridRenderable.hpp
+        GridRenderable.cpp
 )
 
 # RHI headers live in GuiPrivate
@@ -84,6 +87,8 @@ qt_add_shaders(meshplugin "mesh_shaders"
         shaders/instancedColor.vert
         shaders/imageQuad.vert
         shaders/imageQuad.frag
+        shaders/gridLayer.vert
+        shaders/gridLayer.frag
 )
 
 # Output the plugin into a importable directory structure

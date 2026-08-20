@@ -152,8 +152,18 @@ void SceneRenderer::render(QRhiCommandBuffer *cb)
 
     const QColor clearColor = QColor::fromRgbF(0.15f, 0.15f, 0.15f, 1.0f);
     cb->beginPass(renderTarget(), clearColor, { 1.0f, 0 });
+
     for (int i = 0; i < static_cast<int>(_renderables.size()); ++i)
     {
+        if (_renderables[i] && _layerItems[i]->visible() && _layerItems[i]->rendersInBackground())
+            _renderables[i]->render(cb, _state);
+    }
+
+    for (int i = 0; i < static_cast<int>(_renderables.size()); ++i)
+    {
+        if (_layerItems[i]->rendersInBackground())
+            continue;
+
         if (_renderables[i] && _layerItems[i]->visible())
             _renderables[i]->render(cb, _state);
     }

@@ -16,6 +16,12 @@ ApplicationWindow {
         cameraInfo.fov: 70.0
 
         layers: [
+            AxisLayer { 
+
+            },
+            GridLayer {
+                id: gridLayer
+            }
             // MeshLayer {
             //     id: meshLayer
             //     source: Qt.resolvedUrl("/s/prods/mvg/_source_global/users/servantf/meshviewer/mesh.obj")
@@ -25,20 +31,18 @@ ApplicationWindow {
             //     source: Qt.resolvedUrl("/s/prods/mvg/_source_global/users/servantf/meshviewer/039_010-src-master01-v002-aces_2065.0977.exr")
             //     visible: true
             // },
-            SfmDataLayer {
-                id: sfmDataLayer
-                source: Qt.resolvedUrl("/s/prods/fant/sequence/172/172_020/trk/meshroom/wip/MeshroomCache/SfMColorizing/ca7c10f0b60e81570ab8d5b3135bc71cfbdb91e7/sfmData.abc")
-                pointSize: 0.02
-                cameraSize: 0.2
-                visible: true
-                picking: true
-            },
-            AxisLayer { 
+            // SfmDataLayer {
+            //     id: sfmDataLayer
+            //     source: Qt.resolvedUrl("/s/prods/fant/sequence/172/172_020/trk/meshroom/wip/MeshroomCache/SfMColorizing/ca7c10f0b60e81570ab8d5b3135bc71cfbdb91e7/sfmData.abc")
+            //     pointSize: 0.02
+            //     cameraSize: 0.2
+            //     visible: true
+            //     picking: true
+            // },
+            
+            // SphereLayer { 
 
-            },
-            SphereLayer { 
-
-            }
+            // }
         ]
 
         MouseArea {
