@@ -5,6 +5,10 @@ struct Vertex {
     float nx, ny, nz;  // normal
 };
 
+struct PositionVertex {
+    float x, y, z;   // position
+};
+
 struct ColoredVertex {
     float x, y, z;   // position
     float r, g, b;   // color

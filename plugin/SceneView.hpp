@@ -12,7 +12,6 @@
 #include "LayerItem.hpp"
 #include "MotionInfo.hpp"
 #include "CameraInfo.hpp"
-#include "MeshPicker.hpp"
 
 class SceneRenderer;
 
@@ -35,6 +34,12 @@ class SceneView : public QQuickRhiItem
     Q_PROPERTY(CameraInfo cameraInfo READ getCameraInfo WRITE setCameraInfo NOTIFY cameraInfoChanged)
 
 public:
+    struct PendingPickRequest
+    {
+        bool pending = false;
+        QVector2D mousePos;
+    };
+
     explicit SceneView(QQuickItem *parent = nullptr);
     ~SceneView() override;
 
@@ -56,6 +61,10 @@ public:
     CameraInfo &getCameraInfo() { return _cameraInfo; }
     CameraInfo getCameraInfo() const { return _cameraInfo; }
     void setCameraInfo(const CameraInfo &ci);
+
+    Q_INVOKABLE void pick(const QVector2D &mousePos);
+    PendingPickRequest takePendingPickRequest();
+    void applyLayerPick(LayerItem *layer, const LayerPickResult &result);
 
 signals:
     void layersChanged();
@@ -84,4 +93,5 @@ private:
 
     MotionInfo _motionInfo;
     CameraInfo _cameraInfo;
+    PendingPickRequest _pendingPickRequest;
 };

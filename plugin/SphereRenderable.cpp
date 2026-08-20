@@ -1,5 +1,5 @@
 #include "SphereRenderable.hpp"
-#include "SphereGeometry.hpp"
+#include "Geometry.hpp"
 #include "SceneView.hpp"
 #include <QFile>
 
@@ -32,10 +32,10 @@ void SphereRenderable::initialize(QRhi *rhi, QRhiRenderPassDescriptor *rpDesc)
 {
     if (_rhi != rhi)
     {
-        _rhi   = rhi;
+        _rhi = rhi;
         _rpDesc = rpDesc;
-        _pipelineDirty  = true;
-        _geomDirty      = true;
+        _pipelineDirty = true;
+        _geomDirty = true;
         _instancesDirty = true;
         _pipeline.reset();
         _srb.reset();
@@ -151,7 +151,7 @@ void SphereRenderable::buildPipeline()
     });
     _srb->create();
 
-    QShader vert = loadSphereShader(":/shaders/instanciedColor.vert.qsb");
+    QShader vert = loadSphereShader(":/shaders/instancedColor.vert.qsb");
     QShader frag = loadSphereShader(":/shaders/simpleColor.frag.qsb");
 
     // Binding 0: per-vertex data (position + color)

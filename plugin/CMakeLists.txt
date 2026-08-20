@@ -15,6 +15,10 @@ qt_add_qml_module(meshplugin
         MeshLayer.cpp
         ImageLayer.hpp
         ImageLayer.cpp
+        SfmDataLayer.hpp
+        SfmDataLayer.cpp
+        SfmDataPicker.hpp
+        SfmDataPicker.cpp
         AxisLayer.hpp
         SphereLayer.hpp
         SceneView.hpp
@@ -29,7 +33,13 @@ qt_add_qml_module(meshplugin
         AxisRenderable.cpp
         SphereRenderable.hpp
         SphereRenderable.cpp
-        SphereGeometry.hpp
+        SfmDataRenderable.hpp
+        SfmDataRenderable.cpp
+        SfmPointRenderable.hpp
+        SfmPointRenderable.cpp
+        SfmCameraRenderable.hpp
+        SfmCameraRenderable.cpp
+        Geometry.hpp
         MeshLoader.hpp
         MeshLoader.cpp
         MotionInfo.hpp
@@ -55,6 +65,8 @@ target_link_libraries(meshplugin PRIVATE
     embree
     meshoptimizer::meshoptimizer
     aliceVision_image
+    aliceVision_sfmData
+    aliceVision_sfmDataIO
 )
 
 # Shaders
@@ -65,9 +77,11 @@ qt_add_shaders(meshplugin "mesh_shaders"
     FILES
         shaders/mesh.vert
         shaders/mesh.frag
+        shaders/pointSprite.vert
+        shaders/pointSprite.frag
         shaders/simpleColor.vert
         shaders/simpleColor.frag
-        shaders/instanciedColor.vert
+        shaders/instancedColor.vert
         shaders/imageQuad.vert
         shaders/imageQuad.frag
 )

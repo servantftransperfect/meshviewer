@@ -118,3 +118,40 @@ void SceneView::setCameraInfo(const CameraInfo &ci)
     update();
 }
 
+void SceneView::pick(const QVector2D &mousePos)
+{
+    _pendingPickRequest.pending = true;
+    _pendingPickRequest.mousePos = mousePos;
+    update();
+}
+
+SceneView::PendingPickRequest SceneView::takePendingPickRequest()
+{
+    PendingPickRequest request = _pendingPickRequest;
+    _pendingPickRequest.pending = false;
+    return request;
+}
+
+void SceneView::applyLayerPick(LayerItem *layer, const LayerPickResult &result)
+{
+    for (LayerItem *candidate : _layers)
+    {
+        if (!candidate)
+        {
+            continue;
+        }
+
+        if (candidate == layer && result.hit)
+        {
+            candidate->applyPickResult(result);
+        }
+        else
+        {
+            candidate->clearPick();
+        }
+    }
+
+    update();
+    polish();
+}
+

@@ -54,7 +54,10 @@ void MeshLayer::onLoadFinished()
     if (!_meshData->valid)
         _errorString = _meshData->errorString;
     else
+    {
+        _picker.buildBVH(*_meshData);
         _errorString.clear();
+    }
 
     emit loadingChanged();
     emit errorStringChanged();
@@ -66,4 +69,25 @@ void MeshLayer::onLoadFinished()
 std::unique_ptr<IRenderable> MeshLayer::createRenderable() const
 {
     return std::make_unique<MeshRenderable>();
+}
+
+LayerPickResult MeshLayer::pick(const Ray &ray) const
+{
+    if (!_meshData || !_meshData->valid || !_picker.isReady())
+    {
+        return {};
+    }
+
+    const HitResult hit = _picker.pick(ray);
+    if (!hit.hit)
+    {
+        return {};
+    }
+
+    const QVector3D direction = ray.direction.normalized();
+    return {
+        true,
+        hit.distance,
+        ray.origin + direction * hit.distance
+    };
 }

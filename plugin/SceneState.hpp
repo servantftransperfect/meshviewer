@@ -11,7 +11,5 @@ struct SceneState
 
     QMatrix4x4 viewProjection;          /**< Combined view-projection matrix. */
     QMatrix4x4 normalMatrix; /**< Inverse-transposed model matrix for normal transformation. */
-
-    bool hasPick = false;    /**< True once the user has clicked and a surface point was hit. */
-    QVector3D pickPoint;     /**< Last picked surface point in mesh object space. */
+    float projectionScaleY = 1.0f;      /**< Projection matrix vertical scale for point sprite sizing. */
 };

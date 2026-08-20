@@ -13,17 +13,25 @@ ApplicationWindow {
         anchors.fill: parent
         focus: true
 
-        cameraInfo.fov: 120.0
+        cameraInfo.fov: 70.0
 
         layers: [
-            MeshLayer {
-                id: meshLayer
-                source: Qt.resolvedUrl("/s/apps/users/servantf/mesh.obj")
-            },
-            ImageLayer {
-                id: imageLayer
-                source: Qt.resolvedUrl("/s/prods/mvg/_source_global/users/servantf/039_010-src-master01-v002-aces_2065.0977.exr")
+            // MeshLayer {
+            //     id: meshLayer
+            //     source: Qt.resolvedUrl("/s/prods/mvg/_source_global/users/servantf/meshviewer/mesh.obj")
+            // },
+            // ImageLayer {
+            //     id: imageLayer
+            //     source: Qt.resolvedUrl("/s/prods/mvg/_source_global/users/servantf/meshviewer/039_010-src-master01-v002-aces_2065.0977.exr")
+            //     visible: true
+            // },
+            SfmDataLayer {
+                id: sfmDataLayer
+                source: Qt.resolvedUrl("/s/prods/fant/sequence/172/172_020/trk/meshroom/wip/MeshroomCache/SfMColorizing/ca7c10f0b60e81570ab8d5b3135bc71cfbdb91e7/sfmData.abc")
+                pointSize: 0.02
+                cameraSize: 0.2
                 visible: true
+                picking: true
             },
             AxisLayer { 
 
@@ -41,7 +49,10 @@ ApplicationWindow {
             property real initialY: 0
 
             onClicked: (mouse) => {
-                
+                if (mouse.button === Qt.LeftButton)
+                {
+                    sceneView.pick(Qt.vector2d(mouse.x, mouse.y))
+                }
             }
 
             onPressed: (mouse) => {
@@ -60,17 +71,17 @@ ApplicationWindow {
 
                 if (mouse.buttons & Qt.LeftButton)
                 {
-                    sceneView.motionInfo.rotationX = deltaY
-                    sceneView.motionInfo.rotationY = deltaX
+                    sceneView.motionInfo.rotationX = deltaY * 0.5
+                    sceneView.motionInfo.rotationY = deltaX * 0.5
                 }
                 else if (mouse.buttons & Qt.MiddleButton)
                 {
-                    sceneView.motionInfo.planeX = deltaX
-                    sceneView.motionInfo.planeY = deltaY
+                    sceneView.motionInfo.planeX = deltaX * 0.01
+                    sceneView.motionInfo.planeY = deltaY * 0.01
                 }
                 else if (mouse.buttons & Qt.RightButton)
                 {
-                    sceneView.motionInfo.distance = deltaY
+                    sceneView.motionInfo.distance = deltaY * 0.2;
                 }
             }
         }

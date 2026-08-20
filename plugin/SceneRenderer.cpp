@@ -2,6 +2,52 @@
 #include "SceneView.hpp"
 #include "LayerItem.hpp"
 
+#include "MeshPicker.hpp"
+
+#include <QMetaObject>
+#include <QPointer>
+
+#include <limits>
+
+namespace {
+
+struct LayerPickSelection
+{
+    QPointer<LayerItem> layer;
+    LayerPickResult result;
+};
+
+LayerPickSelection pickClosestLayer(const QList<LayerItem *> &layers,
+                                    const Ray &ray)
+{
+    LayerPickSelection bestSelection;
+    bestSelection.result.distance = std::numeric_limits<float>::max();
+
+    for (LayerItem *layer : layers)
+    {
+        if (!layer || !layer->visible() || !layer->picking() || !layer->canPick())
+        {
+            continue;
+        }
+
+        const LayerPickResult candidate = layer->pick(ray);
+        if (candidate.hit && candidate.distance > 0.0f && candidate.distance < bestSelection.result.distance)
+        {
+            bestSelection.layer = layer;
+            bestSelection.result = candidate;
+        }
+    }
+
+    if (!bestSelection.result.hit)
+    {
+        return {};
+    }
+
+    return bestSelection;
+}
+
+}
+
 SceneRenderer::SceneRenderer() = default;
 SceneRenderer::~SceneRenderer() = default;
 
@@ -71,6 +117,26 @@ void SceneRenderer::synchronize(QQuickRhiItem *item)
 
     _state.viewProjection = proj * model;
     _state.normalMatrix   = model.inverted().transposed();
+    _state.projectionScaleY = proj(1, 1);
+
+    const SceneView::PendingPickRequest pickRequest = view->takePendingPickRequest();
+    if (pickRequest.pending && _state.viewportWidth > 0 && _state.viewportHeight > 0)
+    {
+        const Ray ray = MeshPicker::unprojectRay(proj,
+                                                 model,
+                                                 pickRequest.mousePos,
+                                                 static_cast<float>(_state.viewportWidth),
+                                                 static_cast<float>(_state.viewportHeight));
+
+        const LayerPickSelection selection = pickClosestLayer(_layerItems, ray);
+
+        QMetaObject::invokeMethod(
+            view,
+            [view, selection]() {
+                view->applyLayerPick(selection.layer, selection.result);
+            },
+            Qt::QueuedConnection);
+    }
 }
 
 void SceneRenderer::render(QRhiCommandBuffer *cb)

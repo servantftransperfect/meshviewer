@@ -2,6 +2,7 @@
 
 #include "LayerItem.hpp"
 #include "MeshData.hpp"
+#include "MeshPicker.hpp"
 
 #include <QFutureWatcher>
 #include <QString>
@@ -27,6 +28,9 @@ public:
     bool meshDirty() const { return _meshDirty; }
     void clearMeshDirty() { _meshDirty = false; }
 
+    bool canPick() const override { return true; }
+    LayerPickResult pick(const Ray &ray) const override;
+
 signals:
     void sourceChanged();
 
@@ -40,5 +44,6 @@ private:
     QString _source;
     bool _meshDirty = false;
     std::unique_ptr<MeshData> _meshData = std::make_unique<MeshData>();
+    MeshPicker _picker;
     QFutureWatcher<std::unique_ptr<MeshData>> _watcher;
 };
