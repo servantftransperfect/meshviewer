@@ -137,10 +137,24 @@ void SceneRenderer::synchronize(QQuickRhiItem *item)
             },
             Qt::QueuedConnection);
     }
+
+    view->setFps(_fps);
 }
 
 void SceneRenderer::render(QRhiCommandBuffer *cb)
 {
+    if (!_fpsTimer.isValid())
+        _fpsTimer.start();
+
+    ++_frameCount;
+    const qint64 elapsed = _fpsTimer.elapsed();
+    if (elapsed >= 1000)
+    {
+        _fps = static_cast<float>(_frameCount) * 1000.0f / static_cast<float>(elapsed);
+        _frameCount = 0;
+        _fpsTimer.restart();
+    }
+
     QRhiResourceUpdateBatch *batch = _rhi->nextResourceUpdateBatch();
     for (auto &r : _renderables)
     {
@@ -164,7 +178,16 @@ void SceneRenderer::render(QRhiCommandBuffer *cb)
         if (_layerItems[i]->rendersInBackground())
             continue;
 
+        if (_layerItems[i]->rendersInForeground())
+            continue;
+
         if (_renderables[i] && _layerItems[i]->visible())
+            _renderables[i]->render(cb, _state);
+    }
+
+    for (int i = 0; i < static_cast<int>(_renderables.size()); ++i)
+    {
+        if (_renderables[i] && _layerItems[i]->visible() && _layerItems[i]->rendersInForeground())
             _renderables[i]->render(cb, _state);
     }
 

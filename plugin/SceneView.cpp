@@ -118,6 +118,14 @@ void SceneView::setCameraInfo(const CameraInfo &ci)
     update();
 }
 
+void SceneView::setFps(float fps)
+{
+    if (qFuzzyCompare(_fps, fps))
+        return;
+    _fps = fps;
+    emit fpsChanged();
+}
+
 void SceneView::pick(const QVector2D &mousePos)
 {
     _pendingPickRequest.pending = true;

@@ -3,6 +3,7 @@
 #include <QQuickRhiItem>
 #include <rhi/qrhi.h>
 #include <QList>
+#include <QElapsedTimer>
 #include <memory>
 #include <vector>
 
@@ -41,4 +42,8 @@ private:
     SceneState _state;
     QList<LayerItem *> _layerItems;
     std::vector<std::unique_ptr<IRenderable>> _renderables;
+
+    QElapsedTimer _fpsTimer;
+    int _frameCount = 0;
+    float _fps = 0.0f;
 };

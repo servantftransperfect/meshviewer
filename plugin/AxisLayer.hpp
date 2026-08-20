@@ -16,4 +16,6 @@ public:
     {
         return std::make_unique<AxisRenderable>();
     }
+
+    bool rendersInForeground() const override { return true; }
 };

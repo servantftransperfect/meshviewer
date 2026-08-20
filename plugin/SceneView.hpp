@@ -33,6 +33,8 @@ class SceneView : public QQuickRhiItem
     Q_PROPERTY(MotionInfo motionInfo READ getMotionInfo WRITE setMotionInfo NOTIFY motionInfoChanged)
     Q_PROPERTY(CameraInfo cameraInfo READ getCameraInfo WRITE setCameraInfo NOTIFY cameraInfoChanged)
 
+    Q_PROPERTY(float fps READ fps NOTIFY fpsChanged)
+
 public:
     struct PendingPickRequest
     {
@@ -66,12 +68,16 @@ public:
     PendingPickRequest takePendingPickRequest();
     void applyLayerPick(LayerItem *layer, const LayerPickResult &result);
 
+    float fps() const { return _fps; }
+    void setFps(float fps);
+
 signals:
     void layersChanged();
     void loadingChanged();
     void errorStringChanged();
     void motionInfoChanged();
     void cameraInfoChanged();
+    void fpsChanged();
 
 private slots:
     void recomputeAggregateState();
@@ -94,4 +100,5 @@ private:
     MotionInfo _motionInfo;
     CameraInfo _cameraInfo;
     PendingPickRequest _pendingPickRequest;
+    float _fps = 0.0f;
 };

@@ -19,13 +19,14 @@ ApplicationWindow {
             AxisLayer { 
 
             },
-            GridLayer {
-                id: gridLayer
-            }
-            // MeshLayer {
-            //     id: meshLayer
-            //     source: Qt.resolvedUrl("/s/prods/mvg/_source_global/users/servantf/meshviewer/mesh.obj")
+            // GridLayer {
+            //     id: gridLayer
             // },
+            MeshLayer {
+                id: meshLayer
+                source: Qt.resolvedUrl("/s/prods/mvg/_source_global/users/servantf/meshviewer/mesh.obj")
+                picking: true
+            }
             // ImageLayer {
             //     id: imageLayer
             //     source: Qt.resolvedUrl("/s/prods/mvg/_source_global/users/servantf/meshviewer/039_010-src-master01-v002-aces_2065.0977.exr")
@@ -39,11 +40,18 @@ ApplicationWindow {
             //     visible: true
             //     picking: true
             // },
-            
-            // SphereLayer { 
-
-            // }
         ]
+
+        // Text {
+        //     anchors.top: parent.top
+        //     anchors.right: parent.right
+        //     anchors.margins: 8
+        //     text: Math.round(sceneView.fps) + " fps"
+        //     color: "white"
+        //     font.pixelSize: 14
+        //     style: Text.Outline
+        //     styleColor: "black"
+        // }
 
         MouseArea {
             anchors.fill: parent
