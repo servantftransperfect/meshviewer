@@ -45,6 +45,20 @@ void MeshLayer::setSource(const QString &path)
     );
 }
 
+void MeshLayer::setSelection(const QVector3D &selection)
+{
+    if (_selection == selection)
+    {
+        return;
+    }
+
+    _selection = selection;
+    _selectionDirty = true;
+
+    emit selectionChanged();
+    emit dataReady();
+}
+
 void MeshLayer::onLoadFinished()
 {
     _meshData  = _watcher.future().takeResult();
@@ -90,4 +104,19 @@ LayerPickResult MeshLayer::pick(const Ray &ray) const
         hit.distance,
         ray.origin + direction * hit.distance
     };
+}
+
+void MeshLayer::applyPickResult(const LayerPickResult &result)
+{
+    if (!result.hit)
+    {
+        return;
+    }
+
+    setSelection(result.worldPoint);
+}
+
+void MeshLayer::clearPick()
+{
+
 }

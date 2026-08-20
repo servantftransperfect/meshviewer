@@ -19,14 +19,24 @@ ApplicationWindow {
             AxisLayer { 
 
             },
-            // GridLayer {
-            //     id: gridLayer
-            // },
+            GridLayer {
+                id: gridLayer
+                minorFadeStartPixels: 1
+                minorFadeEndPixels: 3
+                minorOpacity: 0.45
+                minorLineWidth: 1.1
+            },
             MeshLayer {
                 id: meshLayer
                 source: Qt.resolvedUrl("/s/prods/mvg/_source_global/users/servantf/meshviewer/mesh.obj")
                 picking: true
-            }
+
+                onSelectionChanged: {
+                    const updatedPositions = sphereLayer.positions.slice()
+                    updatedPositions.push(selection)
+                    sphereLayer.positions = updatedPositions
+                }
+            },
             // ImageLayer {
             //     id: imageLayer
             //     source: Qt.resolvedUrl("/s/prods/mvg/_source_global/users/servantf/meshviewer/039_010-src-master01-v002-aces_2065.0977.exr")
@@ -40,6 +50,12 @@ ApplicationWindow {
             //     visible: true
             //     picking: true
             // },
+            SphereLayer {
+                id: sphereLayer
+                positions: [
+                    Qt.vector3d(0.0, 0.0, 0.0)
+                ]
+            }
         ]
 
         // Text {

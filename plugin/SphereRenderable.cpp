@@ -1,6 +1,7 @@
 #include "SphereRenderable.hpp"
 #include "Geometry.hpp"
 #include "SceneView.hpp"
+#include "SphereLayer.hpp"
 #include <QFile>
 
 static QShader loadSphereShader(const QString &path)
@@ -14,12 +15,21 @@ static QShader loadSphereShader(const QString &path)
     return QShader::fromSerialized(f.readAll());
 }
 
-void SphereRenderable::sync(LayerItem * /*layer*/, SceneView *view)
+void SphereRenderable::sync(LayerItem *layer, SceneView *view)
 {
     if (!view)
     {
         return;
     }
+
+    SphereLayer *sphereLayer = static_cast<SphereLayer *>(layer);
+    if (!sphereLayer->positionsDirty())
+    {
+        return;
+    }
+
+    setPositions(sphereLayer->renderPositions());
+    sphereLayer->clearPositionsDirty();
 }
 
 void SphereRenderable::setPositions(const std::vector<QVector3D> &positions)
